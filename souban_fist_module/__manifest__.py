@@ -1,11 +1,11 @@
 {
     'name': 'Training may 2026',
-    'version': '19.0.0.2',
+    'version': '19.0.0.3',
     'summary': 'This Student model',
     'description': """This is student model """,
     'category': 'training',
-    'author': 'ZestyBeanz Technologies.',
-    'website': 'www.zbeanztech.com',
+    'author': 'Truslink Trading LLC',
+    'website': 'https://trusholding.com/',
     'depends': ['base'],
     'data': [
             'security/ir.model.access.csv',
