@@ -1,0 +1,137 @@
+<odoo>
+	<data>
+        ###form view
+		<record id="student_model_form_view" model="ir.ui.view">
+			<field name="name">student.model.form</field>
+			<field name="model">student.one</field>
+			<field name="arch" type="xml">
+			<form>
+                <sheet>
+				<group>
+                    <group>
+					<field name="name"/>
+                    <field name = "description"/>
+                    <field name = "age"/>
+                    <field name = "marks"/>
+                    <field name = "dob"/> 
+                </group>
+                <group>
+                    <field name = "gender"/>
+                    <field name = "image"/>
+                    <field name = "document"/>
+                    <field name = "document_name"/>
+                    <field name = "student_class"/>
+                </group>    
+				</group>
+                </sheet>
+			</form>
+			</field>
+		</record>
+
+        ###list view
+    <record id="student_model_list_view" model="ir.ui.view">
+    <field name="name">student.model.list</field>
+    <field name="model">student.one</field>
+    <field name="arch" type="xml">
+        <list>
+            <field name="name"/>
+            <field name="age"/>
+            <field name="marks"/>
+            <field name="dob"/>
+        </list>
+    </field>
+</record>
+
+    <!-- student model search view -->
+        <record id ="student_model_search_view" model = "ir.ui.view">
+        <field name="name">student.model.search</field>
+        <field name="model">student.one</field>
+        <field name="arch" type = "xml">
+            <search>
+                <!-- search fields -->
+                 <field name="name" />
+                 <field name="age" />
+                 <field name="marks"/>
+
+                 <filter string ="Age less than 18" 
+                 name="age_minor" 
+                 domain="[('age', '&lt;', 18)]"/>
+
+                 <filter string ="Age 18 - 30 " 
+                 name="age_18_30" 
+                 domain="[('age', '&gt;=', 18),('age', '&lt;=', 30)]"/>
+
+                 <filter string ="Age > 30 " 
+                 name="age_above_30" 
+                 domain="[('age', '&gt;=', 30)]"/>
+
+                 
+
+                 <group>
+                    <filter string = "Age"
+                    name="group_by_age" 
+                    context="{'group_by':'age'}"/>
+                    
+                 </group>
+
+            </search>
+        </field>
+    </record>
+
+        ###kanban view
+    <record id="student_model_kanban_view" model="ir.ui.view">
+    <field name="name">student.model.kanban</field>
+    <field name="model">student.one</field>
+    <field name="arch" type="xml">
+        <kanban>
+            <templates>
+                <t t-name="card">
+                    <div>
+                        <strong>
+                            <field name="name"/>
+                        </strong>
+                        <br/>
+                        Age:
+                        <field name="age"/>
+                        <br/>
+                        Marks:
+                        <field name="marks"/>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
+
+        ###calendar view
+
+    <record id="student_model_calendar_view" model="ir.ui.view">
+    <field name="name">student.model.calendar</field>
+    <field name="model">student.one</field>
+    <field name="arch" type="xml">
+        <calendar string="Student Calendar"
+                  date_start="dob">
+            <field name="name"/>
+        </calendar>
+    </field>
+</record>
+
+
+		 <record id="action_student_one" model="ir.actions.act_window">
+			<field name="name">Student</field>
+			<field name="res_model">student.one</field>
+			<field name="view_mode">list,kanban,calendar,form,search</field>
+		</record>
+		
+		<menuitem name="Students"
+		id="student_menu_root"
+		sequence="1" /> 
+		
+	<menuitem 
+        name="Student"
+		id="menu_student_one"
+		parent="student_menu_root"
+		action="action_student_one"
+		sequence="1" />  
+	</data>
+</odoo>
