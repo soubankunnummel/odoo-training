@@ -2,22 +2,31 @@
 
     <data>
 
-       <!-- Form View -->
-         <record id="student_model_form_view" model="ir.ui.view">
+        <!-- Form View -->
+        <record id="student_model_form_view" model="ir.ui.view">
             <field name="name">student.model.form</field>
             <field name="model">student.student</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+                        <button name="action_status_progres" string="start" type="object"
+                            invisible="state != 'draft'" />
+                        <button name="action_status_done"
+                            string="Done"
+                            type="object"
+                            invisible="state != 'progress'" />
+                        <field name="state" widget="statusbar" />
+                    </header>
 
                     <sheet>
                         <group name="from_parent_grp" string="form_parent">
 
                             <group>
-                                <field name="name" />
-                                <field name="age" />
+                                <field name="name" required="1" placeholder="Enter student name" />
+                                <field name="age" help="Enter student age" />
                                 <field name="marks" />
                                 <field name="gender" />
-                                <field name="is_active" />
+                                <field name="is_active" required="1" />
                                 <field name="student_class" />
 
                             </group>
@@ -29,16 +38,16 @@
 
                         </group>
                         <notebook>
-                            <page name="Basic Info" string="string">
+                            <page name="Basic Info" string="Notes">
                                 <group>
-                                    <field name="description" />
-                                    <field name="bio_html" />
-                                    <field name="date_of_birth" />
-                                    <field name="register_time" />
+                                    <field name="description" help="Enter student description" />
+                                    <field name="bio_html" help="Enter student bio" />
+                                    <field name="date_of_birth" help="Enter student date of birth" />
+                                    <field name="register_time" help="Enter student register time" />
                                 </group>
                             </page>
                             <page name="Documents" string="string">
-                                <field name="document_name" />
+                                <field name="document_name" help="Enter document name" />
                                 <field name="document" filename="document_name" />
                             </page>
                         </notebook>
@@ -75,7 +84,12 @@
             <field name="name">student.kanban</field>
             <field name="model">student.student</field>
             <field name="arch" type="xml">
-                <kanban>
+                <kanban default_group_by="state">
+                    <field name="state" />
+                    <field name="name" />
+                    <field name="age" />
+                    <field name="marks" />
+                    <field name="image" />
                     <templates>
                         <t t-name="card">
                             <div class="oe_kanban_card">
@@ -109,10 +123,13 @@
             <field name="arch" type="xml">
                 <search string="">
                     <field name="name" />
+                    <field name="age" />
                     <filter name="male" string="Male" domain="[('gender', '=', 'male')]"
-                         />
+                    />
                     <filter name="female" string="Female" domain="[('gender', '=', 'female')]" />
-
+                    <filter name="Age above 50" domain="[('age','>',50)]"  />
+                    <filter name="Mens Grp" context="{'group_by':'gender'}"  />
+                    <filter name="Active Studnets"  domain="[('is_active', '=', True)]"/>
                 </search>
             </field>
         </record>
@@ -120,7 +137,7 @@
         <!-- Serch -->
 
         <!-- calender view -->
-         
+
         <record id="student_model_view_calendar" model="ir.ui.view">
             <field name="name">student.model.view.calendar</field>
             <field name="model">student.student</field>
@@ -133,23 +150,22 @@
             </field>
         </record>
 
-        <!-- calender view -->     
-         
+        <!-- calender view -->
+
         <!-- pivot -->
 
         <record id="student_model_view_pivot" model="ir.ui.view">
             <field name="name">student.model.view.pivot</field>
             <field name="model">student.student</field>
             <field name="arch" type="xml">
-                <pivot string="Student Analysis" >
-                    <field name="student_class" type="row"/>
-                    <field name="gender" type="row"/>
+                <pivot string="Student Analysis">
+                    <field name="student_class" type="row" />
+                    <field name="gender" type="row" />
                     <field name="marks" type="measure" />
-                    
+
                 </pivot>
             </field>
         </record>
-        
 
 
         <record id="action_student_student" model="ir.actions.act_window">
