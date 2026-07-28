@@ -38,7 +38,7 @@
 
                         </group>
                         <notebook>
-                            <page name="Basic Info" string="string">
+                            <page name="Basic Info" string="Notes">
                                 <group>
                                     <field name="description" help="Enter student description" />
                                     <field name="bio_html" help="Enter student bio" />
@@ -123,10 +123,13 @@
             <field name="arch" type="xml">
                 <search string="">
                     <field name="name" />
+                    <field name="age" />
                     <filter name="male" string="Male" domain="[('gender', '=', 'male')]"
                     />
                     <filter name="female" string="Female" domain="[('gender', '=', 'female')]" />
-
+                    <filter name="Age above 50" domain="[('age','>',50)]"  />
+                    <filter name="Mens Grp" context="{'group_by':'gender'}"  />
+                    <filter name="Active Studnets"  domain="[('is_active', '=', True)]"/>
                 </search>
             </field>
         </record>
