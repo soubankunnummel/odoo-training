@@ -1,0 +1,20 @@
+{
+    'name': 'Training May 2026',
+    'version': '19.0.0.1',
+    'summary': 'This is student model',
+    'description': 'This module is used for training',
+    'category': 'Training',
+    'author': 'Truslink',
+    'website': 'https://truslink.com',
+    'depends': ['base'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/student_views.xml',
+    ],
+    'assets': {},
+    'test': [],
+    'demo': [],
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+}
