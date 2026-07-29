@@ -40,6 +40,9 @@ class Student(models.Model):
 
     def action_status_done(self):
         self.state = "done"
+        
+    def action_status_draft(self):
+        self.state = 'draft'
 
     def action_open_popup(self):
         return {
