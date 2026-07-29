@@ -40,3 +40,29 @@ class Student(models.Model):
 
     def action_status_done(self):
         self.state = "done"
+
+    def action_open_popup(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Student Details',
+            'res_model': 'student.student',
+            'res_id':self.id,
+            'view_mode':'form',
+            'view_id':self.env.ref(
+                'souban_fist_module.student_form_popup_view'
+            ).id,
+            'target':"new"
+        }
+
+    def action_edit_student(self):
+
+        return {
+        'type': 'ir.actions.act_window',
+        'res_model': 'student.student',
+        'res_id': self.id,
+        'view_mode': 'form',
+         'view_id':self.env.ref(
+                        'souban_fist_module.student_model_form_view'
+                    ).id,
+        'target': 'current',
+    }
