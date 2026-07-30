@@ -2,7 +2,7 @@
 
     <data>
 
-         <record id="action_student_calendar"
+        <record id="action_student_calendar"
             model="ir.actions.act_window">
             <field name="name">Student Calendar</field>
             <field name="res_model">student.student</field>
@@ -16,14 +16,26 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button name="action_status_progres" string="start" type="object"
-                            invisible="state != 'draft'" />
-                        <button name="action_status_done"
-                            string="Done"
-                            type="object"
-                            invisible="state != 'progress'" />
-                        <button name="%(souban_fist_module.action_student_calendar)d"
-                            string="Calendar"
+
+                         <button name="action_status_draft"
+                                string="Draft"
+                                type="object"
+                                invisible="state == 'draft' " />
+                  
+                            <button name="action_status_progres"
+                                string="In Progres"
+                                type="object"
+                                invisible="state == 'progress'" />
+                                
+                            <button name="action_status_done"
+                                string="Done"
+                                type="object"
+                                invisible="state == 'done' " />
+                            
+
+                        <button
+                            name="%(souban_fist_module.action_class_model)d"
+                            string="Class"
                             type="action" />
                         <field name="state" widget="statusbar" />
                     </header>
@@ -226,7 +238,6 @@
             <field name="target">new</field>
         </record>
 
-       
 
         <record
             id="action_student_student" model="ir.actions.act_window">
