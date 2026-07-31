@@ -1,82 +1,34 @@
-from odoo import models, fields, api
+<odoo>
+    <data>
+
+        <record id="student_class_view_form" model="ir.ui.view">
+            <field name="name">student.class.form.view</field>
+            <field name="model">student.class</field>
+            <field name="arch" type="xml">
+                <form string="Class Form">
+                    <sheet>
+                        <group>
+                            <field name="name" required="1" title="Class Name" />
+                            <field name="code" title="Class Code" placeholder="eg: CLASS-10A" />
+                            <field name="section" placeholder='eg: A, B, C' />
+                            <field name="academic_year" />
+                            <!-- <field name="teacher_id" title="Select you Teachers" /> -->
+                            <field name="active" />
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_class_model" model="ir.actions.act_window">
+            <field name="name">Class Model</field>
+            <field name="res_model">student.class</field>
+            <field name="view_mode">list,form</field>
+        </record>
 
 
-class Student(models.Model):
-    _name = "student.student"
-    _description = "Student Model"
-    name = fields.Char(string="Name")
-    description = fields.Text(string="Description")
-    bio_html = fields.Html(string="Bio")
-    age = fields.Integer(string="Age")
-    marks = fields.Float(string="Marks")
-    is_active = fields.Boolean(string="Is Active", default=True)
-    date_of_birth = fields.Date(string="Date Of Birth", required=True)
-    register_time = fields.Datetime(string="Register Time")
-    gender = fields.Selection([("male", "Male"), ("female", "Female")], string="Gender")
-    image = fields.Image(string="Student Photo")
-    document = fields.Binary(string="Document")
-    document_name = fields.Char(string="File Name")
-    # student_class = fields.Selection(
-    #     [
-    #         ("a", "Class A"),
-    #         ("b", "Class B"),
-    #         ("c", "Class C"),
-    #     ],
-    #     string="Class",
-    # )
-    student_class_id = fields.Many2one(
-        'student.class',
-        string='Class'
-    )
-    state = fields.Selection(
-        [
-            ("draft", "Draft"),
-            ("progress", "In Progress"),
-            ("done", "Done"),
-        ],
-        default="draft",
-    )
+    </data>
 
 
-
-    def action_status_progres(self):
-        self.state = "progress"
-
-    def action_status_done(self):
-        self.state = "done"
-        
-    def action_status_draft(self):
-        self.state = 'draft'
-
-    def action_open_popup(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Student Details',
-            'res_model': 'student.student',
-            'res_id':self.id,
-            'view_mode':'form',
-            'view_id':self.env.ref(
-                'souban_fist_module.student_form_popup_view'
-            ).id,
-            'target':"new"
-        }
-
-    def action_edit_student(self):
-
-        return {
-        'type': 'ir.actions.act_window',
-        'res_model': 'student.student',
-        'res_id': self.id,
-        'view_mode': 'form',
-         'view_id':self.env.ref(
-                        'souban_fist_module.student_model_form_view'
-                    ).id,
-        'target': 'current',
-    }
-
-
-    @api.onchange('age')
-    def _onchange_(self):
-        if self.age < 18 :
-            return False
-    
+</odoo>
