@@ -11,7 +11,7 @@ class Student(models.Model):
     age = fields.Integer(string="Age")
     marks = fields.Float(string="Marks")
     is_active = fields.Boolean(string="Is Active", default=True)
-    date_of_birth = fields.Date(string="Date Of Birth", required=True)
+    date_of_birth = fields.Date(string="Date Of Birth")
     register_time = fields.Datetime(string="Register Time")
     gender = fields.Selection([("male", "Male"), ("female", "Female")], string="Gender")
     image = fields.Image(string="Student Photo")
@@ -34,6 +34,8 @@ class Student(models.Model):
         ],
         default="draft",
     )
+
+    user_id = fields.Many2one('res.users',string="Student Advisory", )
 
     def action_status_progres(self):
         self.state = "progress"

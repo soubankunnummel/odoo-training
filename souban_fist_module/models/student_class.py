@@ -15,11 +15,11 @@ class StudentClass(models.Model):
     #     string="Class Teacher"
     # )
 
-    # student_ids = fields.One2many(
-    #     'student.registration',
-    #     'class_id',
-    #     string="Students"
-    # )
+    student_ids = fields.One2many(
+        'student.student',
+        'student_class_id',
+        string="Students"
+    )
 
     # student_count = fields.Integer(
     #     string="Total Students",
