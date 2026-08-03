@@ -1,6 +1,6 @@
 {
     'name': 'Training may 2026',
-    'version': '19.0.0.7',
+    'version': '19.0.0.8',
     'summary': 'This Student model',
     'description': """This is student model """,
     'category': 'training',
@@ -10,6 +10,7 @@
     'data': [
             'security/ir.model.access.csv',
             'views/class_view.xml',
+            'views/subject_view.xml',
             'views/student_view.xml'
        
         

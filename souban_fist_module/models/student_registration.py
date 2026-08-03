@@ -35,7 +35,25 @@ class Student(models.Model):
         default="draft",
     )
 
-    user_id = fields.Many2one('res.users',string="Student Advisory", )
+    subject_ids = fields.Many2many(
+        'student.subjects',
+        relation = 'student_subject_rel',
+        column1= 'student_id',
+        column2= 'subject_id',
+        string = 'Subjects',
+
+    )
+
+    teachers_id = fields.Many2many(
+        'res.users',
+        relation = 'student_teacher_rel',
+        column1 = 'studnet_id',
+        column2 = 'teacher_id',
+        string= 'Teachers'
+    )
+
+
+    advisor_id = fields.Many2one('res.users',string="Student Advisory", )
 
     def action_status_progres(self):
         self.state = "progress"
