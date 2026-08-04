@@ -21,6 +21,16 @@ class StudentClass(models.Model):
         string="Students"
     )
 
+
+
+    subject_ids = fields.Many2many(
+        'student.subjects',
+        'class_subject_rel',
+        'class_id',
+        'subject_id',
+        string = "Subjects"
+    )
+
     # student_count = fields.Integer(
     #     string="Total Students",
     #     compute="_compute_student_count"

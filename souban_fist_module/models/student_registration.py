@@ -1,5 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 
 class Student(models.Model):
@@ -59,7 +61,13 @@ class Student(models.Model):
         self.state = "progress"
 
     def action_status_done(self):
-        self.state = "done"
+         for rec in self:
+                    if rec.age < 18:
+                        raise ValidationError(
+                            "Student age must be greater than  to 18."
+                        )
+                    
+                    self.state = "done"
 
     def action_status_draft(self):
         self.state = "draft"
@@ -86,10 +94,23 @@ class Student(models.Model):
             "target": "current",
         }
 
-    @api.constrains("age")
-    def _check_age(self):
+    @api.onchange("gender")
+    def _check_gender(self):
         for rec in self:
-            if rec.age < 18:
-                raise ValidationError(
-                    "Student age must be greater than  to 18."
-                )
+            if rec.gender == 'male':
+                rec.description = 'This is Male Person'
+            if rec.gender == 'female':
+                rec.description = 'This is Female Person'
+
+    @api.onchange('age')
+    def _onchange_age(self):
+        if self.age:
+             self.date_of_birth = date.today() - relativedelta(years=self.age)
+
+
+    @api.onchange('student_class_id')
+    def _onchange_subject(self):
+        self.subject_ids = self.student_class_id.subject_ids
+                 
+                 
+                 

@@ -49,6 +49,7 @@
                                 <field name="marks" />
                                 <field name="gender" />
                                 <field name="is_active" required="1" />
+                                <field name="description" />
 
                             </group>
                             <group name="image_grop" string="string">
