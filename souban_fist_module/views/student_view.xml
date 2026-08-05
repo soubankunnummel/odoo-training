@@ -44,13 +44,17 @@
                         <group name="from_parent_grp" string="form_parent">
 
                             <group>
-                                <field name="name" required="1" placeholder="Enter student name" />
-                                <field name="age" help="Enter student age" />
-                                <field name="marks" />
-                                <field name="gender" />
-                                <field name="is_active" required="1" />
-                                <field name="description" />
+                                <group>
+                                    <field name="name" />
+                                    <field name="age" />
+                                    <field name="gender" />
+                                </group>
 
+                                <group>
+                                    <field name="marks" />
+                                    <field name="grade" readonly="1" />
+                                    <field name="is_active" />
+                                </group>
                             </group>
                             <group name="image_grop" string="string">
                                 <field name="image" widget="image" class="oe_avathar" />

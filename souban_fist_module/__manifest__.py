@@ -1,6 +1,6 @@
 {
     'name': 'Training may 2026',
-    'version': '19.0.0.9',
+    'version': '19.0.0.10',
     'summary': 'This Student model',
     'description': """This is student model """,
     'category': 'training',

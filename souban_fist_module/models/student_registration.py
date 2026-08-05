@@ -9,7 +9,7 @@ class Student(models.Model):
     _description = "Student Model"
     name = fields.Char(string="Name")
     description = fields.Text(string="Description")
-    bio_html = fields.Html(string="Bio")
+    bio_html = fields.Html(string="Bio",compute="compute_sammery",store=True)
     age = fields.Integer(string="Age")
     marks = fields.Float(string="Marks")
     is_active = fields.Boolean(string="Is Active", default=True)
@@ -56,6 +56,12 @@ class Student(models.Model):
 
 
     advisor_id = fields.Many2one('res.users',string="Student Advisory", )
+    grade = fields.Char(string="Grade",compute="compute_grade" ,store=True)
+
+
+
+
+
 
     def action_status_progres(self):
         self.state = "progress"
@@ -111,6 +117,30 @@ class Student(models.Model):
     @api.onchange('student_class_id')
     def _onchange_subject(self):
         self.subject_ids = self.student_class_id.subject_ids
+        # self.subject_ids = [(6, 0, self.student_class_id.subject_ids.ids)]
+        # else:
+        # self.subject_ids = [(5, 0, 0)]
+
+    @api.depends('marks')
+    def compute_grade(self):
+         for rec in self:
+             if rec.marks >= 90 :
+                 rec.grade = 'A'
+             elif rec.marks >= 75:
+                rec.grade = 'B'
+             elif rec.marks >= 50:
+                rec.grade = "C"
+             else:
+                rec.grade = "F"
+
+    @api.depends('name','age')
+    def compute_sammery(self):
+        for rec in self:
+            if rec.age and rec.name:
+                rec.bio_html = f"Hi this is {rec.name} and i'm {rec.age} years old"
+
+            
+
                  
-                 
+        
                  
