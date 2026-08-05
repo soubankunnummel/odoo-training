@@ -1,5 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 
 class Student(models.Model):
@@ -7,7 +9,7 @@ class Student(models.Model):
     _description = "Student Model"
     name = fields.Char(string="Name")
     description = fields.Text(string="Description")
-    bio_html = fields.Html(string="Bio")
+    bio_html = fields.Html(string="Bio",compute="compute_sammery",store=True)
     age = fields.Integer(string="Age")
     marks = fields.Float(string="Marks")
     is_active = fields.Boolean(string="Is Active", default=True)
@@ -35,13 +37,43 @@ class Student(models.Model):
         default="draft",
     )
 
-    user_id = fields.Many2one('res.users',string="Student Advisory", )
+    subject_ids = fields.Many2many(
+        'student.subjects',
+        relation = 'student_subject_rel',
+        column1= 'student_id',
+        column2= 'subject_id',
+        string = 'Subjects',
+
+    )
+
+    teachers_id = fields.Many2many(
+        'res.users',
+        relation = 'student_teacher_rel',
+        column1 = 'studnet_id',
+        column2 = 'teacher_id',
+        string= 'Teachers'
+    )
+
+
+    advisor_id = fields.Many2one('res.users',string="Student Advisory", )
+    grade = fields.Char(string="Grade",compute="compute_grade" ,store=True)
+
+
+
+
+
 
     def action_status_progres(self):
         self.state = "progress"
 
     def action_status_done(self):
-        self.state = "done"
+         for rec in self:
+                    if rec.age < 18:
+                        raise ValidationError(
+                            "Student age must be greater than  to 18."
+                        )
+                    
+                    self.state = "done"
 
     def action_status_draft(self):
         self.state = "draft"
@@ -68,10 +100,47 @@ class Student(models.Model):
             "target": "current",
         }
 
-    @api.constrains("age")
-    def _check_age(self):
+    @api.onchange("gender")
+    def _check_gender(self):
         for rec in self:
-            if rec.age < 18:
-                raise ValidationError(
-                    "Student age must be greater than  to 18."
-                )
+            if rec.gender == 'male':
+                rec.description = 'This is Male Person'
+            if rec.gender == 'female':
+                rec.description = 'This is Female Person'
+
+    @api.onchange('age')
+    def _onchange_age(self):
+        if self.age:
+             self.date_of_birth = date.today() - relativedelta(years=self.age)
+
+
+    @api.onchange('student_class_id')
+    def _onchange_subject(self):
+        self.subject_ids = self.student_class_id.subject_ids
+        # self.subject_ids = [(6, 0, self.student_class_id.subject_ids.ids)]
+        # else:
+        # self.subject_ids = [(5, 0, 0)]
+
+    @api.depends('marks')
+    def compute_grade(self):
+         for rec in self:
+             if rec.marks >= 90 :
+                 rec.grade = 'A'
+             elif rec.marks >= 75:
+                rec.grade = 'B'
+             elif rec.marks >= 50:
+                rec.grade = "C"
+             else:
+                rec.grade = "F"
+
+    @api.depends('name','age')
+    def compute_sammery(self):
+        for rec in self:
+            if rec.age and rec.name:
+                rec.bio_html = f"Hi this is {rec.name} and i'm {rec.age} years old"
+
+            
+
+                 
+        
+                 
