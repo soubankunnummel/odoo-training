@@ -6,6 +6,38 @@
 			<field name="model">student.one</field>
 			<field name="arch" type="xml">
 			<form>
+                <header>
+                    <button name="action_confirm"
+                            string="Confirm"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state == 'confirm'"/>
+                            
+                    <button name="action_cancel"
+                            string="Cancel"
+                            type="object"
+                            class="btn-danger"
+                            invisible="state == 'cancel'"/>
+
+                    <button name="action_done"
+                            string="Done"
+                            type="object"
+                            class="btn-success"
+                            invisible="state == 'done'"/>
+                    
+                    <button name="action_draft"
+                            string="Set to Draft"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="state == 'draft'"/>
+
+                    <button name="%(fahiz_first_module.action_department_one)d"
+                                  type="action"
+                                  string="Departments"
+                                  class="btn-info"/>
+
+                    <field name="state" widget="statusbar"/>
+                </header>
                 <sheet>
 				<group>
                     <group>
@@ -20,7 +52,9 @@
                     <field name = "image"/>
                     <field name = "document"/>
                     <field name = "document_name"/>
-                    <field name = "student_class"/>
+                    <field name=  "department_id" options="{'no_create': True, 'no_edit': True}"/>
+                    <field name=  "user_id" options="{'no_create': True, 'no_edit': True}"/>
+                    <field name="certification_ids" widget="many2many_tags"/>
                 </group>    
 				</group>
                 </sheet>
@@ -115,7 +149,8 @@
         </calendar>
     </field>
 </record>
-
+        
+<!-- action -->
 
 		 <record id="action_student_one" model="ir.actions.act_window">
 			<field name="name">Student</field>

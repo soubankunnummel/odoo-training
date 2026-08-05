@@ -1,0 +1,23 @@
+<odoo>
+  <data>
+       <record id="certification_form_view" model="ir.ui.view">
+        <field name="name">certification.one.form</field>
+        <field name="model">certification.one</field>
+        <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="name" required="1"/>
+            </group>
+          </sheet>
+        </form>
+        </field>
+      </record>
+   <record id="action_certification_one" model="ir.actions.act_window">
+    <field name="name">Certification One</field>
+    <field name="res_model">certification.one</field>
+    <field name="view_mode">list,form</field>
+   </record>
+   <!-- <menuitem name="Certification One" id="menu_certification_one" parent="menu_certification" action="action_certification_one" sequence="1"/> -->
+   </data>
+</odoo>

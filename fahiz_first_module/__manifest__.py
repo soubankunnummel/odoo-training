@@ -1,6 +1,6 @@
 {
     'name': 'Training May 2026',
-    'version': '19.0.0.1',
+    'version': '19.0.0.2',
     'summary': 'This is student model',
     'description': 'This module is used for training',
     'category': 'Training',
@@ -9,7 +9,9 @@
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
+        'views/student_views2.xml',
         'views/student_views.xml',
+        'views/certifications_views.xml',
     ],
     'assets': {},
     'test': [],

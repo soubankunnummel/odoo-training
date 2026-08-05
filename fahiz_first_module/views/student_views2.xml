@@ -1,0 +1,43 @@
+<odoo>
+	<data>
+        ###form view
+		<record id="department_model_form_view" model="ir.ui.view">
+			<field name="name">department.one.form</field>
+			<field name="model">department.one</field>
+			<field name="arch" type="xml">
+            <form>
+                <sheet>
+				<group>
+
+                    <field name="name" />
+                    <field name="code" />
+                    <field name="description" />
+                    <field name="established_date" />
+                    <field name="active" />
+                    <field name="state" />
+                    
+                </group>
+                <notebook>
+                    <page string="Students">
+                        <field name="student_ids">
+                            <list>
+                                <field name="name" />
+                                <field name="age" />
+                                <field name="marks" />
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+                </sheet>
+            </form>
+            </field>
+            </record>                
+
+            <record id="action_department_one" model="ir.actions.act_window">
+			<field name="name">Department Model</field>
+			<field name="res_model">department.one</field>
+			<field name="view_mode">form</field>
+		</record>
+
+        </data>
+</odoo>
