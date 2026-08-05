@@ -17,21 +17,21 @@
                 <form>
                     <header>
 
-                         <button name="action_status_draft"
-                                string="Draft"
-                                type="object"
-                                invisible="state == 'draft' " />
-                  
-                            <button name="action_status_progres"
-                                string="In Progres"
-                                type="object"
-                                invisible="state == 'progress'" />
-                                
-                            <button name="action_status_done"
-                                string="Done"
-                                type="object"
-                                invisible="state == 'done' " />
-                            
+                        <button name="action_status_draft"
+                            string="Draft"
+                            type="object"
+                            invisible="state == 'draft' " />
+
+                        <button name="action_status_progres"
+                            string="In Progres"
+                            type="object"
+                            invisible="state == 'progress'" />
+
+                        <button name="action_status_done"
+                            string="Done"
+                            type="object"
+                            invisible="state == 'done' " />
+
 
                         <button
                             name="%(souban_fist_module.action_class_model)d"
@@ -49,7 +49,8 @@
                                 <field name="marks" />
                                 <field name="gender" />
                                 <field name="is_active" required="1" />
-                                <field name="student_class" />
+                                <field name="student_class_id" options="{'no_create': True, 'no_create_edit': True}" />
+                                <field name="user_id" />
 
                             </group>
                             <group name="image_grop" string="string">
@@ -187,7 +188,7 @@
             <field name="model">student.student</field>
             <field name="arch" type="xml">
                 <pivot string="Student Analysis">
-                    <field name="student_class" type="row" />
+                    <field name="student_class_id" type="row" />
                     <field name="gender" type="row" />
                     <field name="marks" type="measure" />
 
@@ -259,6 +260,4 @@
             sequence="1" />
 
     </data>
-
-
 </odoo>

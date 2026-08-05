@@ -1,16 +1,35 @@
 <odoo>
     <data>
 
-        <record id="class_model_view_form" model="ir.ui.view">
-            <field name="name">class.model.form.view</field>
+        <record id="student_class_view_form" model="ir.ui.view">
+            <field name="name">student.class.form.view</field>
             <field name="model">student.class</field>
             <field name="arch" type="xml">
                 <form string="Class Form">
                     <sheet>
                         <group>
-                            <field name="name" />
+                            <field name="name" required="1" title="Class Name" />
+                            <field name="code" title="Class Code" placeholder="eg: CLASS-10A" />
+                            <field name="section" placeholder='eg: A, B, C' />
+                            <field name="academic_year" />
+                            <!-- <field name="teacher_id" title="Select you Teachers" /> -->
+                            <field name="active" />
+
                         </group>
+                        
+                    <notebook>
+                        <page string="Students">
+                            <field name="student_ids">
+                                <list editable="bottom">
+                                    <field name="name" />
+                                    <field name="age" />
+                                    <field name="gender" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                     </sheet>
+
                 </form>
             </field>
         </record>
