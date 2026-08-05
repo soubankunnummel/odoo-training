@@ -1,1 +1,2 @@
-from . import student_model
+from . import student_registration
+from . import student_class
