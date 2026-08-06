@@ -1,5 +1,7 @@
 from odoo import models,fields,api
 from odoo.exceptions import ValidationError
+from datetime import date
+
 
 class StudentModel(models.Model):
     _name = "student.one"
@@ -38,6 +40,13 @@ class StudentModel(models.Model):
         'certification_id', #target model field
         string="Certifications"
     )
+    ce_marks = fields.Float(string="Certification Marks")
+    total_marks = fields.Float(string="Total Marks", compute="_compute_total_marks", store=True)
+
+    expiry_date = fields.Date(string="Expiry Date")
+    is_expired = fields.Boolean(string = "Expired", compute="_compute_is_expired", store=True)
+
+
 
     def action_draft(self):
         self.state = 'draft'
@@ -72,6 +81,18 @@ class StudentModel(models.Model):
             raise ValidationError("Marks cannot be greater than 1000")
         else:
             self.description = "Marks are within the valid range"
+
+    @api.depends('marks','ce_marks')
+    def _compute_total_marks(self):
+        for rec in self:
+            rec.total_marks = rec.marks + rec.ce_marks
+
+    
+    @api.depends('expiry_date')
+    def _compute_is_expired(self):
+        for rec in self:
+            rec.is_expired = rec.expiry_date and rec.expiry_date < date.today()
+
         
 
 

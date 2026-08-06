@@ -1,6 +1,6 @@
 {
     'name': 'Training May 2026',
-    'version': '19.0.0.2',
+    'version': '19.0.0.3',
     'summary': 'This is student model',
     'description': 'This module is used for training',
     'category': 'Training',
