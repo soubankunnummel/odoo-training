@@ -6,8 +6,13 @@ class StudentClass(models.Model):
     _description = "Student Class"
 
     name = fields.Char(string="Class Name")
-    code = fields.Char(string="Class Code")
+    code = fields.Char(string="Class Code",required=True,)
     section = fields.Char(string="Section")
+    _unique_class_code = models.Constraint(
+            "unique(code, section)",
+            "Class code and section must be unique together!"
+        )
+
     academic_year = fields.Date(string="Academic Year")
 
     # teacher_id = fields.Many2one(
@@ -20,8 +25,6 @@ class StudentClass(models.Model):
         'student_class_id',
         string="Students"
     )
-
-
 
     subject_ids = fields.Many2many(
         'student.subjects',

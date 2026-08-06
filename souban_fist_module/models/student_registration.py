@@ -36,7 +36,6 @@ class Student(models.Model):
         ],
         default="draft",
     )
-
     subject_ids = fields.Many2many(
         'student.subjects',
         relation = 'student_subject_rel',
@@ -45,7 +44,6 @@ class Student(models.Model):
         string = 'Subjects',
 
     )
-
     teachers_id = fields.Many2many(
         'res.users',
         relation = 'student_teacher_rel',
@@ -53,12 +51,17 @@ class Student(models.Model):
         column2 = 'teacher_id',
         string= 'Teachers'
     )
-
-
     advisor_id = fields.Many2one('res.users',string="Student Advisory", )
     grade = fields.Char(string="Grade",compute="compute_grade" ,store=True)
-
-
+    email = fields.Char(string="Email")
+    _unique_student_emails = models.Constraint(
+            "UNIQUE(email)",
+            "Email alredy exists!"
+        )
+    
+    student_code = fields.Char(readonly=True)
+    statistics = fields.Text(string="Statistics", readonly=True)
+  
 
 
 
@@ -140,6 +143,67 @@ class Student(models.Model):
                 rec.bio_html = f"Hi this is {rec.name} and i'm {rec.age} years old"
 
             
+    @api.constrains("marks")
+    def _check_mark_(self):
+        for rec in self:
+            if rec.marks > 100 or rec.marks < 0:
+                raise ValidationError("Marks must between 0 and 100")
+
+    @api.constrains("advisor_id")
+    def _check_advisor(self):
+        for rec in self:
+            if not rec.advisor_id:
+                raise ValidationError("Plase select a Advisor")
+
+    @api.model_create_multi
+    def create(self, vals_list):
+
+        for vals in vals_list:
+
+            last_student = self.search(
+            [],
+            order="id desc",
+            limit=1
+            )
+
+            next_number = (
+            last_student.id + 1
+            if last_student
+            else 1
+            )
+
+            vals["student_code"] = (
+            f"STU{next_number:04d}"
+            )
+
+        return super().create(vals_list)
+
+    @api.model
+    def get_student_statistics(self):
+        return {
+            "total": self.search_count([]),
+            "male": self.search_count([("gender", "=", "male")]),
+            "female": self.search_count([("gender", "=", "female")]),
+        }
+
+    def action_get_statistics(self):
+        stats = self.env["student.student"].get_student_statistics()
+        message = (
+            f"Total Students: {stats['total']}\n"
+            f"Male Students: {stats['male']}\n"
+            f"Female Students: {stats['female']}"
+        )
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": "Student Statistics",
+                "message": message,
+                "type": "success",
+                "sticky": False,
+            },
+        }
+        
 
                  
         
