@@ -1,0 +1,141 @@
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="student_registration_form_view" model="ir.ui.view">
+            <field name="name">student.registration.form</field>
+            <field name="model">student.registration</field>
+            <field name="arch" type="xml">
+                <form string="Student Registration">
+                    <header>
+                        <button name="action_confirm" invisible="state == 'confirmed' "
+                            string="Confirm" type="object" class="btn-primary" />
+                        <button name="action_set_draft" invisible="state == 'draft' "
+                            string="Set to Draft" type="object" />
+                        <button name="action_complete" invisible="state == 'completed' "
+                            string="Done" type="object" />
+                        <button name="action_show_summary" string="Show Summary" type="object" />
+                        <button name="%(souban_second_module.action_department_department)d"
+                            string="Departments" type="action" class="btn-secondary"/>
+                        <button name="%(souban_second_module.action_subject_subject)d"
+                            string="Subjects" type="action" class="btn-secondary"/>
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" />
+                                <field name="student_code" readonly="1" />
+                                <field name="age" />
+                                <field name="email" />
+                            </group>
+                            <group>
+                                <field name="gender" />
+                                <field name="department_id" />
+                                <field name="subject_ids" widget="many2many_tags" />
+                                <field name="photo" widget="image" class="oe_avatar" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="More Info">
+                                <group>
+                                    <field name="register_date" />
+                                    <field name="notes" />
+                                    <field name="active" />
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- List View -->
+
+        <record id="student_registration_list_view" model="ir.ui.view">
+            <field name="name">student.registration.list</field>
+            <field name="model">student.registration</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="student_code" />
+                    <field name="name" />
+                    <field name="age" />
+                    <field name="gender" />
+                    <field name="department_id" />
+                    <field name="state" />
+                </list>
+            </field>
+        </record>
+
+        <!-- Search View -->
+
+        <record id="student_registration_search_view" model="ir.ui.view">
+            <field name="name">student.registration.search</field>
+            <field name="model">student.registration</field>
+            <field name="arch" type="xml">
+                <search string="Students">
+                    <field name="name" />
+                    <field name="student_code" />
+                    <field name="department_id" />
+                    <filter name="draft_students" string="Draft" domain="[('state', '=', 'draft')]" />
+                    <filter name="department_groups" string="Group By Department"
+                        context="{'group_by': 'department_id'}" />
+                    <filter name="confirmed_students" string="Confirmed"
+                        domain="[('state', '=', 'confirmed')]" />
+                </search>
+            </field>
+        </record>
+
+        <!-- Kanban View -->
+
+        <record id="student_registration_kanban_view" model="ir.ui.view">
+            <field name="name">student.registration.kanban</field>
+            <field name="model">student.registration</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name" />
+                    <field name="photo" />
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_card">
+                                <div class="text-center">
+                                    <field name="photo" widget="image" class="oe_avatar" />
+                                </div>
+                                <strong>
+                                    <field name="name" />
+                                </strong>
+                                <br />
+                                <span>
+                                    <field name="department_id" />
+                                </span>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Calender View -->
+
+        <record id="student_registration_calendar_view" model="ir.ui.view">
+            <field name="name">student.registration.calendar</field>
+            <field name="model">student.registration</field>
+            <field name="arch" type="xml">
+                <calendar string="Students" date_start="register_date" color="state">
+                    <field name="name" />
+                    <field name="department_id" />
+                </calendar>
+            </field>
+        </record>
+
+        <record id="action_student_registration" model="ir.actions.act_window">
+            <field name="name">Students</field>
+            <field name="res_model">student.registration</field>
+            <field name="view_mode">list,kanban,form,calendar</field>
+        </record>
+
+        <menuitem id="student_registration_menu_root" name="Student Registration" sequence="1" />
+        <menuitem id="student_registration_menu" name="Students"
+            parent="student_registration_menu_root" action="action_student_registration"
+            sequence="1" />
+    </data>
+</odoo>

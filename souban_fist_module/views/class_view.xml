@@ -19,13 +19,7 @@
 
                         <notebook>
                             <page string="Students">
-                                <field name="student_ids">
-                                    <list editable="bottom">
-                                        <field name="name" />
-                                        <field name="age" />
-                                        <field name="gender" />
-                                    </list>
-                                </field>
+                                <field name="student_ids"/>
                             </page>
                             <page string="Subjects">
                                 <field 
