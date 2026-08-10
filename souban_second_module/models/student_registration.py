@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
 
@@ -8,7 +8,7 @@ class StudentRegistration(models.Model):
     # _order = 'id desc'
 
     name = fields.Char(string='Student Name', required=True)
-    student_code = fields.Char(string='Student Code', readonly=True)
+    student_code = fields.Char(string='Student Code', readonly=True, required=True, copy=False, index="trigram",  default=lambda self: _('New'))
     age = fields.Integer(string='Age')
     email = fields.Char(string='Email')
     active = fields.Boolean(string='Active', default=True)
@@ -57,10 +57,11 @@ class StudentRegistration(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            if not vals.get('student_code'):
-                last_student = self.search([], order='id desc', limit=1)
-                next_number = last_student.id + 1 if last_student else 1
-                vals['student_code'] = f'STD{next_number:04d}'
+            if not vals.get('student_code') or vals.get('student_code') == _("New"):
+                vals['student_code'] = self.env['ir.sequence'].with_company(
+                    vals.get('company_id')
+                ).next_by_code('student.registration') or _("New")
+
         return super().create(vals_list)
 
     @api.model
