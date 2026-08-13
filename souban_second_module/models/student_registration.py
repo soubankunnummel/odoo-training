@@ -54,7 +54,7 @@ class StudentRegistration(models.Model):
             'res_model': 'student.registration',
             'view_mode': 'list,form',
             'domain': [('department_id', '=', self.department_id.id)],
-            'target': 'current',
+            'target': 'new',
         }
 
     @api.onchange('department_id')

@@ -18,6 +18,19 @@
             </field>
         </record>
 
+        <record id="subject_view_search" model="ir.ui.view">
+            <field name="name">subject.view.search</field>
+            <field name="model">student.subject</field>
+            <field name="arch" type="xml">
+                <search string="">
+                    <field name="name" />
+                    <field name="department_id" />
+                     <filter name="subjects_groups" string="Group By Subjects"
+                        context="{'group_by': 'department_id'}" />
+                </search>
+            </field>
+        </record>
+
         <record id="subject_list_view" model="ir.ui.view">
             <field name="name">student.subject.list</field>
             <field name="model">student.subject</field>

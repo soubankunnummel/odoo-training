@@ -14,6 +14,7 @@
                                 <field name="student_count" widget="statinfo" string="Students" />
                             </button>
                             <button name="%(souban_second_module.action_subject_subject)d"
+                                context="{'search_default_subjects_groups': 1, 'default_department_id': id}"
                                 type="action" class="oe_stat_button" icon="fa-book">
                                 <field name="subject_count" widget="statinfo" string="Subjects" />
                             </button>
