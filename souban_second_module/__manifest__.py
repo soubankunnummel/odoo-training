@@ -1,6 +1,6 @@
 {
     'name': 'Student Management Training',
-    'version': '19.0.0.2',
+    'version': '19.0.0.3',
     'summary': 'Simple module for student registration, departments and subjects',
     'description': 'A simple Odoo training module with registration, department and subject models.',
     'category': 'Training',
@@ -10,6 +10,7 @@
     'data': [
         'security/ir.model.access.csv',
         'data/sequence.xml',
+        'views/student_dashboard.xml',
         'views/department_views.xml',
         'views/subject_views.xml',
         'views/student_registration_views.xml',

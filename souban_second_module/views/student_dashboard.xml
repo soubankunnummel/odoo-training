@@ -1,0 +1,101 @@
+<odoo>
+
+    <record id="student_dashboard_form_view" model="ir.ui.view">
+        <field name="name">student.dashboard.form</field>
+        <field name="model">student.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Student Dashboard">
+                <sheet>
+                    <group>
+                        <group string="Overview ">
+                            <field name="total_students" />
+                            <field name="draft_students" />
+                            <field name="confirmed_students" />
+                        </group>
+                        <group string="With Context ">
+                            <field name="all_students" />
+                            <field name="inactive_students" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="All Students">
+                            <field name="all_student_ids">
+                                <list>
+                                    <field name="student_code" />
+                                    <field name="name" />
+                                    <field name="email" />
+                                    <field name="state" />
+                                   
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Confirmed Students  ">
+                            <field name="confirmed_students_ids">
+                                <list>
+                                    <field name="student_code" />
+                                    <field name="name" />
+                                    <field name="email" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Students by State ">
+                            <field name="state_line_ids">
+                                <list>
+                                    <field name="state" />
+                                    <field name="count" />
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Active Emails ">
+                            <field name="email_line_ids">
+                                <list>
+                                    <field name="email" />
+                                </list>
+                            </field>
+                        </page>
+                        <!-- <page string="Browsed Student (browse)">
+                            <field name="browsed_student_ids">
+                                <list>
+                                    <field name="student_code" />
+                                    <field name="name" />
+                                    <field name="email" />
+                                    <field name="state" />
+                                    <field name="department_id" />
+                                </list>
+                            </field>
+                        </page> -->
+                        <page string="Record Check">
+                            <field name="exists_line_ids">
+                                <list>
+                                    <field name="description" />
+                                    <field name="result" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_student_dashboard" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="res_model">student.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="student_dashboard_form_view" />
+    </record>
+
+    <record id="student_dashboard_default" model="student.dashboard">
+        <field name="name">Student Dashboard Overview</field>
+    </record>
+
+    <menuitem
+        id="student_dashboard_menu"
+        name="Dashboard"
+        action="action_student_dashboard"
+        parent="student_registration_menu_root"
+        sequence="1" />
+
+
+</odoo>

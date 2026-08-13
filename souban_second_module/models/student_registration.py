@@ -28,16 +28,39 @@ class StudentRegistration(models.Model):
     register_date = fields.Date(string='Register Date', default=fields.Date.today)
     notes = fields.Text(string='Notes')
 
+    classmate_count = fields.Integer(
+        compute='_compute_classmate_count'
+    )
+
     _unique_student_emails = models.Constraint(
         'UNIQUE(email)',
-        'Email alredy exists!'
+        'Email already exists!'
     )
+
+    @api.depends('department_id')
+    def _compute_classmate_count(self):
+        for rec in self:
+            if rec.department_id:
+                rec.classmate_count = self.env['student.registration'].search_count([
+                    ('department_id', '=', rec.department_id.id)
+                ])
+            else:
+                rec.classmate_count = 0
+
+    def action_view_classmates(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Classmates',
+            'res_model': 'student.registration',
+            'view_mode': 'list,form',
+            'domain': [('department_id', '=', self.department_id.id)],
+            'target': 'current',
+        }
 
     @api.onchange('department_id')
     def _onchange_department(self):
         if self.department_id:
             self.subject_ids = self.department_id.subject_ids.ids
-        
 
     @api.constrains('age')
     def _check_age(self):
@@ -46,7 +69,7 @@ class StudentRegistration(models.Model):
                 raise ValidationError('Age must be between 1 and 100.')
 
     def action_confirm(self):
-        self.state =  'confirmed'
+        self.state = 'confirmed'
 
     def action_set_draft(self):
         self.state = 'draft'
@@ -64,28 +87,74 @@ class StudentRegistration(models.Model):
 
         return super().create(vals_list)
 
-    @api.model
-    def get_student_summary(self):
+    def action_deactivate(self):
+        self.write({
+            'active': False
+        })
+
+    def unlink(self):
+        for rec in self:
+            if rec.state == 'confirmed':
+                raise ValidationError(
+                    _("Confirmed students cannot be deleted.")
+                )
+
+        return super().unlink()
+
+    # def action_remove_student(self):
+    #     name = self.name
+    #     self.unlink()
+    #     return {
+    #         'type': 'ir.actions.client',
+    #         'tag': 'display_notification',
+    #         'params': {
+    #             'title': 'Remove Student',
+    #             'message': f"Deleted student {name}.",
+    #             'type': 'success',
+    #             'sticky': False,
+    #         },
+    #     }
+
+    def action_read_recent_students(self):
+        recent_students = self.search([], order='register_date desc', limit=5)
+        if not recent_students:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Recent Students',
+                    'message': 'No recent students found.',
+                    'type': 'warning',
+                    'sticky': False,
+                },
+            }
         return {
-            'total': self.search_count([]),
-            'draft': self.search_count([('state', '=', 'draft')]),
-            'confirmed': self.search_count([('state', '=', 'confirmed')]),
+            'type': 'ir.actions.act_window',
+            'name': 'Recent Students',
+            'res_model': 'student.registration',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', recent_students.ids)],
+            'target': 'current',
         }
 
-    def action_show_summary(self):
-        summary = self.get_student_summary()
-        message = (
-            f"Total Students: {summary['total']}\n"
-            f"Draft: {summary['draft']}\n"
-            f"Confirmed: {summary['confirmed']}"
-        )
+
+    def action_duplicate_active_students(self):
+        duplicated_students = self.filtered(lambda rec: rec.active)
+        copies = []
+        for student in duplicated_students:
+            copied = student.copy({
+                'name': f"{student.name} (Copy)"
+            })
+            copies.append(copied)
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
             'params': {
-                'title': 'Student Summary',
-                'message': message,
+                'title': 'Duplicate Active',
+                'message': f"Duplicated {len(copies)} active student(s).",
                 'type': 'success',
                 'sticky': False,
             },
         }
+
+

@@ -24,6 +24,10 @@ class Department(models.Model):
         compute='_compute_student_count'
     )
 
+    subject_count = fields.Integer(
+        compute='_compute_subject_count'
+    )
+
     _unique_department_code = models.Constraint(
         'UNIQUE(code)',
         'Department code must be unique!'
@@ -33,3 +37,8 @@ class Department(models.Model):
     def _compute_student_count(self):
         for rec in self:
             rec.student_count = len(rec.student_ids)
+
+    @api.depends('subject_ids')
+    def _compute_subject_count(self):
+        for rec in self:
+            rec.subject_count = len(rec.subject_ids)

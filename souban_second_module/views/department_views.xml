@@ -7,6 +7,17 @@
             <field name="arch" type="xml">
                 <form string="Department">
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="%(souban_second_module.action_student_registration)d"
+                                type="action" class="oe_stat_button" icon="fa-users"
+                                context="{'search_default_department_groups': 1, 'default_department_id': id}">
+                                <field name="student_count" widget="statinfo" string="Students" />
+                            </button>
+                            <button name="%(souban_second_module.action_subject_subject)d"
+                                type="action" class="oe_stat_button" icon="fa-book">
+                                <field name="subject_count" widget="statinfo" string="Subjects" />
+                            </button>
+                        </div>
                         <group>
                             <field name="name"/>
                             <field name="code"/>

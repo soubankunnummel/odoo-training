@@ -13,14 +13,26 @@
                             string="Set to Draft" type="object" />
                         <button name="action_complete" invisible="state == 'completed' "
                             string="Done" type="object" />
-                        <button name="action_show_summary" string="Show Summary" type="object" />
+                     
                         <button name="%(souban_second_module.action_department_department)d"
                             string="Departments" type="action" class="btn-secondary" />
                         <button name="%(souban_second_module.action_subject_subject)d"
                             string="Subjects" type="action" class="btn-secondary" />
+                        <button name="action_deactivate"
+                            string="Deactivate"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="not active" />
                         <field name="state" widget="statusbar" />
                     </header>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_classmates" type="object"
+                                class="oe_stat_button" icon="fa-user-friends"
+                                invisible="not department_id">
+                                <field name="classmate_count" widget="statinfo" string="Classmates" />
+                            </button>
+                        </div>
                         <div class="oe_title">
                             <h1>
                                 <field name="student_code" />
@@ -86,6 +98,8 @@
                         context="{'group_by': 'department_id'}" />
                     <filter name="confirmed_students" string="Confirmed"
                         domain="[('state', '=', 'confirmed')]" />
+                    <filter name="deactivated_students" string="Deactivated"
+                        domain="[('active', '=', False)]" />
                 </search>
             </field>
         </record>
