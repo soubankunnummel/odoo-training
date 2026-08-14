@@ -152,6 +152,55 @@
             <field name="view_mode">list,kanban,form,calendar</field>
         </record>
 
+        <!-- Server Action: Bulk Confirm Draft Students -->
+        <record id="action_bulk_confirm_draft" model="ir.actions.server">
+            <field name="name">Confirm Selected Draft Students</field>
+            <field name="model_id" ref="model_student_registration" />
+            <field name="binding_model_id" ref="model_student_registration" />
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                draft_students = records.filtered(lambda r: r.state == 'draft')
+                draft_students.action_confirm()
+            </field>
+        </record>
+        <!-- Server Action: Bulk Draft  Students -->
+        <record id="action_bulk_draft_confirm" model="ir.actions.server">
+            <field name="name">Confirm to Draft </field>
+            <field name="model_id" ref="model_student_registration" />
+            <field name="binding_model_id" ref="model_student_registration" />
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                confirm_students = records.filtered(lambda r: r.state == 'confirmed')
+                confirm_students.action_set_draft()
+            </field>
+        </record>
+
+        <record id="student_chnage_department" model="ir.actions.server">
+            <field name="name">Change Department</field>
+            <field name="model_id" ref="model_student_registration" />
+            <field name="binding_model_id" ref="model_student_registration" />
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                wizard = records.env['student.transfer.wizard'].create({
+                'student_ids': [(6, 0, records.ids)],
+                })
+                action = {
+                'type': 'ir.actions.act_window',
+                'name': 'Transfer Students',
+                'res_model': 'student.transfer.wizard',
+                'res_id': wizard.id,
+                'view_mode': 'form',
+                'target': 'new',
+                }
+            </field>
+        </record>
+
         <menuitem id="student_registration_menu_root" name="Student Registration" sequence="1" />
         <menuitem id="student_registration_menu" name="Students"
             parent="student_registration_menu_root" action="action_student_registration"

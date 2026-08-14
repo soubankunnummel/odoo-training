@@ -134,7 +134,7 @@ class StudentRegistration(models.Model):
             'res_model': 'student.registration',
             'view_mode': 'list,form',
             'domain': [('id', 'in', recent_students.ids)],
-            'target': 'current',
+            'target': 'new',
         }
 
 
@@ -156,5 +156,7 @@ class StudentRegistration(models.Model):
                 'sticky': False,
             },
         }
+
+
 
 

@@ -1,0 +1,26 @@
+<odoo>
+    <record id="student_transfer_wizard_form_view" model="ir.ui.view">
+        <field name="name">student.transfer.wizard.form</field>
+        <field name="model">student.transfer.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Transfer Students">
+                <group>
+                    <field name="department_id"/>
+                    <field name="student_ids" widget="many2many_tags" readonly="1"/>
+                </group>
+                <footer>
+                    <button name="action_confirm_transfer" type="object"
+                        string="Confirm Transfer" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_student_transfer_wizard" model="ir.actions.act_window">
+        <field name="name">Transfer Students</field>
+        <field name="res_model">student.transfer.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
