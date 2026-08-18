@@ -23,6 +23,8 @@
                             type="object"
                             class="btn-secondary"
                             invisible="not active" />
+                        <button name="%(souban_second_module.action_student_update_wizard)d"
+                            string="Update Student" type="action" class="btn-secondary" />
                         <field name="state" widget="statusbar" />
                     </header>
                     <sheet>
@@ -44,11 +46,20 @@
                                 <field name="student_code" readonly="1" />
                                 <field name="age" />
                                 <field name="email" />
+                                <field name="user_id" />
+                                <field name="user_email" />
+                                <field name="user_name" />
                             </group>
                             <group>
+
                                 <field name="gender" />
                                 <field name="department_id" />
                                 <field name="subject_ids" widget="many2many_tags" />
+                                <field name="subject_department_code" />
+                                <field name="guardian_id" />
+                                <field name="guardian_name" />
+                                <field name="guardian_email" />
+                                <field name="guardian_phone" />
                                 <field name="photo" widget="image" class="oe_avatar" />
                             </group>
                         </group>
@@ -78,6 +89,9 @@
                     <field name="age" />
                     <field name="gender" />
                     <field name="department_id" />
+                    <field name="subject_department_code" />
+                    <field name="guardian_id" />
+                    <field name="guardian_phone" />
                     <field name="state" />
                 </list>
             </field>
@@ -159,11 +173,7 @@
             <field name="binding_model_id" ref="model_student_registration" />
             <field name="binding_view_types">list</field>
             <field name="state">code</field>
-            <field name="code">
-                if records:
-                draft_students = records.filtered(lambda r: r.state == 'draft')
-                draft_students.action_confirm()
-            </field>
+            <field name="code">records.action_bulk_confirm_draft()</field>
         </record>
         <!-- Server Action: Bulk Draft  Students -->
         <record id="action_bulk_draft_confirm" model="ir.actions.server">
@@ -172,11 +182,7 @@
             <field name="binding_model_id" ref="model_student_registration" />
             <field name="binding_view_types">list</field>
             <field name="state">code</field>
-            <field name="code">
-                if records:
-                confirm_students = records.filtered(lambda r: r.state == 'confirmed')
-                confirm_students.action_set_draft()
-            </field>
+            <field name="code">records.action_bulk_draft_confirm()</field>
         </record>
 
         <record id="student_chnage_department" model="ir.actions.server">
@@ -185,20 +191,7 @@
             <field name="binding_model_id" ref="model_student_registration" />
             <field name="binding_view_types">list</field>
             <field name="state">code</field>
-            <field name="code">
-                if records:
-                wizard = records.env['student.transfer.wizard'].create({
-                'student_ids': [(6, 0, records.ids)],
-                })
-                action = {
-                'type': 'ir.actions.act_window',
-                'name': 'Transfer Students',
-                'res_model': 'student.transfer.wizard',
-                'res_id': wizard.id,
-                'view_mode': 'form',
-                'target': 'new',
-                }
-            </field>
+            <field name="code">action = records.action_change_department()</field>
         </record>
 
         <menuitem id="student_registration_menu_root" name="Student Registration" sequence="1" />

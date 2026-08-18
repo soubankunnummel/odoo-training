@@ -11,6 +11,7 @@
                             <field name="code"/>
                             <field name="credits"/>
                             <field name="department_id"/>
+                            <field name="department_code"/>
                             <field name="active"/>
                         </group>
                     </sheet>
@@ -40,6 +41,7 @@
                     <field name="code"/>
                     <field name="credits"/>
                     <field name="department_id"/>
+                    <field name="department_code"/>
                 </list>
             </field>
         </record>

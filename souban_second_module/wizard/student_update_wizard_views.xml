@@ -1,0 +1,33 @@
+<odoo>
+<record id="student_update_wizards_form_views" model="ir.ui.view">
+      <field name="name">student.update.wizard.form</field>
+        <field name="model">student.update.wizard</field>
+    <field name="arch" type="xml">
+        <form string="">
+            <!-- <sheet> -->
+                <group>
+                     <field name="student_id" readonly="1"/>
+                    <field name="name"/>
+                    <field name="age"/>
+                    <field name="email"/>
+                    <field name="gender"/>
+                    <field name="department_id"/>
+                </group>
+               <footer>
+                    <button name="action_update_student" type="object"
+                        string="Update" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            <!-- </sheet> -->
+        </form>
+    </field>
+</record>
+  <record id="action_student_update_wizard" model="ir.actions.act_window">
+        <field name="name">Update Student</field>
+        <field name="res_model">student.update.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <!---->
+
+</odoo>

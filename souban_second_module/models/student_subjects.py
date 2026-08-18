@@ -17,3 +17,4 @@ class Subject(models.Model):
         'UNIQUE(code)',
         'Subject code must be unique!'
     )
+    department_code = fields.Char(related="department_id.code", string ="Dept Code",readonly=True)
