@@ -108,7 +108,12 @@ class StudentRegistration(models.Model):
                     vals.get("company_id")
                 ).next_by_code("student.registration") or _("New")
 
-        return super().create(vals_list)
+        students = super().create(vals_list)
+        template = self.env.ref('souban_second_module.email_template_student_welcome')
+        for student in students:
+            if student.email:
+                template.send_mail(student.id, force_send=True)
+        return students
 
     def action_deactivate(self):
         self.write({"active": False})
@@ -203,5 +208,24 @@ class StudentRegistration(models.Model):
                 days = (fields.Date.today() - student.register_date).days
                 if days >= 60 :
                     student.action_deactivate()
+
+    @api.model
+    def _cron_send_completion_reminder(self):
+        print("--------------------working-----------------------------------")
+        print("--------------------working-----------------------------------")
+
+        confirmed_students = self.search([
+        ('state', '=', 'confirmed'),
+        ('register_date', '!=', False),
+        ('email', '!=', False),
+        ])
+        template = self.env.ref('souban_second_module.email_template_completion_reminder')
+        for student in confirmed_students:
+            days = (fields.Date.today() - student.register_date).days
+            if 7 <= days < 30:
+            # if days >= 0:
+                template.send_mail(student.id, force_send=True)
+
+ 
             
 
