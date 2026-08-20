@@ -179,3 +179,29 @@ class StudentRegistration(models.Model):
             "view_mode": "form",
             "target": "new",
         }
+
+    # cron job fn
+    @api.model
+    def _cron_auto_complete_students(self):
+        confirmed_students = self.search([
+            ('state' , '=', 'confirmed')
+        ])
+        for student in confirmed_students:
+            if student.register_date:
+                days = (fields.Date.today() - student.register_date).days
+                if days >= 30:
+                    student.action_complete()
+
+    @api.model
+    def _cron_auto_deactivate_old_students(self):
+        students = self.search([
+            ('department_id','=',False),
+            ('active','=',True)
+        ])
+        for student in students:
+            if student.register_date:
+                days = (fields.Date.today() - student.register_date).days
+                if days >= 60 :
+                    student.action_deactivate()
+            
+

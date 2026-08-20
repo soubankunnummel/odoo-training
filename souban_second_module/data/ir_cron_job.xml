@@ -1,0 +1,27 @@
+<odoo>
+
+    <record id="cron_auto_complete_students" model="ir.cron">
+        <field name="name">Auto Compele Confimed Students</field>
+        <field name="model_id" ref="model_student_registration" />
+        <field name="state">code</field>
+        <field name="code">model._cron_auto_complete_students()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <!-- <field name="numbercall">1</field> -->
+        <field name="active">True</field>
+
+    </record>
+
+    <record id="cron_auto_deactivate_students" model="ir.cron">
+        <field name="name">Auto Deactivate Old Students</field>
+        <field name="model_id" ref="model_student_registration" />
+        <field name="state">code</field>
+        <field name="code">model._cron_auto_deactivate_old_students()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <!-- <field name="numbercall">1</field> -->
+        <field name="active">True</field>
+
+    </record>
+
+</odoo>
