@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="student_report_custom_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="student">
+                <head>
+                    <style>
+                        body { font-family: Arial, sans-serif; }
+                        .report-header { background-color: #875A7B; color: white; padding: 20px; text-align: center; }
+                        .report-body { padding: 20px; }
+                        .info-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+                        .info-table td, .info-table th { border: 1px solid #ddd; padding: 10px; }
+                        .info-table th { background-color: #f0f0f0; font-weight: bold; }
+                        .report-footer { margin-top: 30px; text-align: center; font-size: 12px; color: #666; }
+                    </style>
+                </head>
+                <body>
+                    <div class="report-header">
+                        <h1>Student Registration Report</h1>
+                        <p>Student Management System</p>
+                    </div>
+                    <div class="report-body">
+                        <table class="info-table">
+                            <tr>
+                                <th>Field</th>
+                                <th>Value</th>
+                            </tr>
+                            <tr>
+                                <td>Student Code</td>
+                                <td><t t-esc="student.student_code"/></td>
+                            </tr>
+                            <tr>
+                                <td>Name</td>
+                                <td><t t-esc="student.name"/></td>
+                            </tr>
+                            <tr>
+                                <td>Age</td>
+                                <td><t t-esc="student.age"/></td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td><t t-esc="student.email"/></td>
+                            </tr>
+                            <tr>
+                                <td>Gender</td>
+                                <td><t t-esc="student.gender"/></td>
+                            </tr>
+                            <tr>
+                                <td>Department</td>
+                                <td><t t-esc="student.department_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td>Subjects</td>
+                                <td>
+                                    <t t-foreach="student.subject_ids" t-as="subject">
+                                        <t t-esc="subject.name"/>
+                                        <t t-if="not subject_last">, </t>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Register Date</td>
+                                <td><t t-esc="student.register_date"/></td>
+                            </tr>
+                            <tr>
+                                <td>State</td>
+                                <td><t t-esc="student.state"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="report-footer">
+                        <p>Student Management System</p>
+                    </div>
+                </body>
+            </t>
+        </t>
+    </template>
+</odoo>

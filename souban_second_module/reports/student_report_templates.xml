@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="student_report_template">
+    <t t-call="web.external_layout">
+
+        <main>
+            <div class="page">
+
+                <h2>Student Report</h2>
+
+                <t t-foreach="docs" t-as="student">
+
+                    <p><strong>Student Code :</strong> <t t-esc="student.student_code"/></p>
+                    <p><strong>Name :</strong> <t t-esc="student.name"/></p>
+                    <p><strong>Age :</strong> <t t-esc="student.age"/></p>
+                    <p><strong>Email :</strong> <t t-esc="student.email"/></p>
+                    <p><strong>Gender :</strong> <t t-esc="student.gender"/></p>
+                    <p><strong>Department :</strong> <t t-esc="student.department_id.name"/></p>
+                    <p><strong>Register Date :</strong> <t t-esc="student.register_date"/></p>
+                    <p><strong>State :</strong> <t t-esc="student.state"/></p>
+
+                    <h3>Subjects</h3>
+
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Code</th>
+                                <th>Credits</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="student.subject_ids" t-as="subject">
+                                <tr>
+                                    <td><t t-esc="subject.name"/></td>
+                                    <td><t t-esc="subject.code"/></td>
+                                    <td><t t-esc="subject.credits"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                </t>
+
+            </div>
+        </main>
+
+    </t>
+</template>
+
+</odoo>

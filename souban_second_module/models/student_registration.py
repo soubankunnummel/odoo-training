@@ -226,6 +226,26 @@ class StudentRegistration(models.Model):
             # if days >= 0:
                 template.send_mail(student.id, force_send=True)
 
- 
-            
+    # def action_print_xlsx(self):
+    #     import base64
+    #     report = self.env['report.souban_second_module.student_xlsx_report']
+    #     file_data = report.generate_xlsx(self.ids)
+    #     attachment = self.env['ir.attachment'].create({
+    #         'name': 'Student_Report.xlsx',
+    #         'type': 'binary',
+    #         'datas': base64.b64encode(file_data),
+    #         'res_model': 'student.registration',
+    #         'res_id': self.ids[0],
+    #     })
+    #     return {
+    #         'type': 'ir.actions.act_url',
+    #         'url': '/web/content/%d?download=true' % attachment.id,
+    #         'target': 'self',
+    #     }
+    def action_print_xlsx(self):
+            return {
+                'type': 'ir.actions.act_url',
+                'url': '/student/xlsx/report/%d' % self.ids[0],
+                'target': 'self',
+            }
 
