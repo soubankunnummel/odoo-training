@@ -1,0 +1,27 @@
+<odoo>
+    <!-- Admin group: can see all students -->
+    <record id="group_student_admin" model="res.groups">
+        <field name="name">Student Admin</field>
+    </record>
+
+    <!-- User group: can only see own records -->
+    <record id="group_student_user" model="res.groups">
+        <field name="name">Student User</field>
+    </record>
+
+    <!-- Record rule: Users see only records they created -->
+    <record id="rule_own_student_records" model="ir.rule">
+        <field name="name">User: Own Students Only</field>
+        <field name="model_id" ref="model_student_registration"/>
+        <field name="domain_force">[('create_uid','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_student_user'))]"/>
+    </record>
+
+    <!-- Record rule: Admin sees all records -->
+    <record id="rule_admin_all_students" model="ir.rule">
+        <field name="name">Admin: All Students</field>
+        <field name="model_id" ref="model_student_registration"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('group_student_admin'))]"/>
+    </record>
+</odoo>

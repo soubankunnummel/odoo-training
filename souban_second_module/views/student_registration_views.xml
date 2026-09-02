@@ -51,15 +51,15 @@
                             <group>
                                 <field name="name" />
                                 <field name="student_code" readonly="1" />
-                                <field name="age" />
-                                <field name="email" />
+                                <field name="age" groups="souban_second_module.group_student_admin"/>
+                                <field name="email" groups="souban_second_module.group_student_admin" />
                                 <field name="user_id" />
                                 <field name="user_email" />
                                 <field name="user_name" />
                             </group>
                             <group>
 
-                                <field name="gender" />
+                                <field name="gender" groups="souban_second_module.group_student_admin"/>
                                 <field name="department_id" />
                                 <field name="subject_ids" widget="many2many_tags" />
                                 <field name="subject_department_code" />
@@ -93,8 +93,8 @@
                 <list>
                     <field name="student_code" />
                     <field name="name" />
-                    <field name="age" />
-                    <field name="gender" />
+                    <field name="age" groups="souban_second_module.group_student_admin" />
+                    <field name="gender" groups="souban_second_module.group_student_admin" />
                     <field name="department_id" />
                     <field name="subject_department_code" />
                     <field name="guardian_id" />
@@ -211,6 +211,8 @@
             name="Report with Filter"
             action="action_student_report_wizard"
             parent="student_registration_menu"
-            sequence="2"/>
+            sequence="2"
+            groups="souban_second_module.group_student_admin"
+            />
     </data>
 </odoo>

@@ -1,0 +1,15 @@
+<odoo>
+    <record id="res_users_view_inherit" model="ir.ui.view">
+        <field name="name">res.users.view.inherit</field>
+        <field name="model">res.users</field>
+        <!-- Add inherit_id to extend existing form -->
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="before">
+                <group string="Student Info">
+                    <field name="student_rank" groups="souban_second_module.group_student_admin"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
