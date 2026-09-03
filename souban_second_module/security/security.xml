@@ -9,6 +9,11 @@
         <field name="name">Student User</field>
     </record>
 
+    <!-- Commission group: eligible for commission -->
+    <record id="group_commission_eligible" model="res.groups">
+        <field name="name">Commission Eligible</field>
+    </record>
+
     <!-- Record rule: Users see only records they created -->
     <record id="rule_own_student_records" model="ir.rule">
         <field name="name">User: Own Students Only</field>
@@ -23,5 +28,29 @@
         <field name="model_id" ref="model_student_registration"/>
         <field name="domain_force">[(1,'=',1)]</field>
         <field name="groups" eval="[(4, ref('group_student_admin'))]"/>
+    </record>
+
+    <!-- Server Action: Enable Commission for Selected Users -->
+    <record id="action_enable_commission" model="ir.actions.server">
+        <field name="name">Enable Commission</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="binding_model_id" ref="base.model_res_users"/>
+        <field name="state">code</field>
+        <field name="code">
+            for user in records:
+                user.write({'commission_eligible': True})
+        </field>
+    </record>
+
+    <!-- Server Action: Disable Commission for Selected Users -->
+    <record id="action_disable_commission" model="ir.actions.server">
+        <field name="name">Disable Commission</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="binding_model_id" ref="base.model_res_users"/>
+        <field name="state">code</field>
+        <field name="code">
+            for user in records:
+                user.write({'commission_eligible': False})
+        </field>
     </record>
 </odoo>

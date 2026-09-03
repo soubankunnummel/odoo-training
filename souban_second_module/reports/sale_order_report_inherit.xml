@@ -1,0 +1,52 @@
+<odoo>
+    <template id="report_saleorder_document_inherit_commission" inherit_id="sale.report_saleorder_document">
+        <!-- Commission column header -->
+        <xpath expr="//th[@name='th_subtotal']" position="before">
+            <th t-if="env.user.has_group('souban_second_module.group_commission_eligible')"
+                name="th_commission" class="text-end">
+                <span>Commission</span>
+            </th>
+        </xpath>
+
+        <!-- Commission column in product row -->
+        <xpath expr="//td[@name='td_product_subtotal']" position="before">
+            <td t-if="env.user.has_group('souban_second_module.group_commission_eligible')"
+                name="td_product_commission" class="text-end o_price_total">
+                <t t-if="not line.is_downpayment and not collapse_prices">
+                    <span t-out="line.commission_amount"
+                          t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                </t>
+            </td>
+        </xpath>
+
+        <!-- Commission in section total -->
+        <xpath expr="//td[@name='td_section_price']" position="before">
+            <td t-if="env.user.has_group('souban_second_module.group_commission_eligible')"
+                name="td_section_commission" class="text-end o_price_total">
+                <span t-if="show_section_total"
+                      t-out="sum(l.commission_amount for l in line.child_ids)"
+                      t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+            </td>
+        </xpath>
+
+        <!-- Total Commission in summary -->
+        <xpath expr="//div[@name='so_total_summary']" position="after">
+            <div t-if="env.user.has_group('souban_second_module.group_commission_eligible')"
+                 class="clearfix mt-2">
+                <div class="row">
+                    <div class="col-6 ms-auto">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Total Commission</strong></td>
+                                <td class="text-end">
+                                    <span t-out="sum(l.commission_amount for l in doc.order_line)"
+                                          t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,75 @@
+<odoo>
+
+    <!-- Form View -->
+
+    <record id="sale_order_form_inherit_commission" model="ir.ui.view">
+        <field name="name">sale.order.form.commission</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']//list//field[@name='price_unit']"
+                position="after">
+                <field name="commission_eligible" column_invisible="True" />
+                <field name="commission_percentage" column_invisible="True" />
+                <field name="commission_amount"
+                    optional="show"
+                    readonly="1"
+                    groups="souban_second_module.group_commission_eligible" />
+            </xpath>
+            <!-- <xpath expr="//field[@name='tax_totals']" position="before">
+                <group string="Commission Info" groups="souban_second_module.group_commission_eligible">
+                    <field name="total_commission"/>
+                </group>
+            </xpath> -->
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="sale_order_list_inherit_commission" model="ir.ui.view">
+        <field name="name">sale.order.list.commission</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_total']" position="after">
+                <field name="total_commission" optional="show"
+                    groups="souban_second_module.group_commission_eligible" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="sale_order_search_inherit_commission" model="ir.ui.view">
+        <field name="name">sale.order.search.commission</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_view_search_inherit_sale" />
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
+                <separator />
+                <filter string="Has Commission" name="has_commission"
+                    domain="[('order_line.commission_amount', '&gt;', 0)]" />
+            </xpath>
+            <!-- <xpath expr="//filter[@name='sales']" position="after">
+            <group expand="0" string="Group By">
+                <filter string="Salesperson" name="groupby_user_id"
+                        context="{'group_by': 'user_id'}"/>
+            </group>
+        </xpath> -->
+
+        </field>
+    </record>
+
+     <!-- Kanban View -->
+    <record id="sale_order_kanban_inherit_commission" model="ir.ui.view">
+        <field name="name">sale.order.kanban.commission</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_kanban_upload"/>
+        <field name="arch" type="xml">
+           <xpath expr="//div[@class='d-flex align-items-baseline mb-2']" position="after">
+                  <div class="d-flex text-muted" groups="souban_second_module.group_commission_eligible">
+                <span class="me-1">Commission:</span>
+                <field name="total_commission" widget="monetary"/>
+            </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
