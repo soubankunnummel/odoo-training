@@ -5,3 +5,5 @@ from . import student_dashboard
 from . import res_users_inherit
 from . import sale_order_line_inherit
 from . import sale_order_inherit
+from . import student_library_book
+from . import student_book_wishlist

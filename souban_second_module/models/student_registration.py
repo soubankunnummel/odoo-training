@@ -35,6 +35,21 @@ class StudentRegistration(models.Model):
     register_date = fields.Date(string="Register Date", default=fields.Date.today)
     notes = fields.Text(string="Notes")
 
+    # Library - One2many
+    borrowed_book_ids = fields.One2many(
+        'student.library.book', 'borrower_id', string='Borrowed Books'
+    )
+
+    # Wishlist - Many2many
+    wishlist_book_ids = fields.Many2many(
+        'student.library.book', string='Wishlist Books'
+    )
+
+    # Computed
+    borrowed_count = fields.Integer(
+        compute='_compute_borrowed_count', string='Books Borrowed'
+    )
+
 
     # compute field
     classmate_count = fields.Integer(compute="_compute_classmate_count")
@@ -248,4 +263,65 @@ class StudentRegistration(models.Model):
                 'url': '/student/xlsx/report/%d' % self.ids[0],
                 'target': 'self',
             }
+
+    @api.depends('borrowed_book_ids')
+    def _compute_borrowed_count(self):
+        for record in self:
+            record.borrowed_count = len(record.borrowed_book_ids)
+
+    # def action_borrow_book(self):
+    #     # """Operator (4) - Add book to borrowed list"""
+    #     self.ensure_one()
+    #     return {
+    #         'type': 'ir.actions.client',
+    #         'tag': 'display_notification',
+    #         'params': {
+    #             'title': 'Borrow Book',
+    #             'message': 'Select a book from the Books menu to borrow.',
+    #             'type': 'info',
+    #         },
+    #     }
+
+    def action_return_book(self, book_id):
+        self.ensure_one()
+        book = self.env['student.library.book'].browse(book_id)
+        book.write({'borrower_id': False, 'available': True})
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Book Returned',
+                'message': f'{book.name} returned successfully.',
+                'type': 'success',
+            },
+        }
+
+    def action_clear_borrowed(self):
+        # """Operator (5) - Remove all borrowed books"""
+        self.ensure_one()
+        self.borrowed_book_ids.write({'borrower_id': False, 'available': True})
+        self.write({'borrowed_book_ids': [(5, 0, 0)]})
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'All Returned',
+                'message': 'All books returned.',
+                'type': 'success',
+            },
+        }
+
+    def action_replace_wishlist(self, book_ids):
+        """Operator (6) - Replace wishlist with new books"""
+        self.ensure_one()
+        self.write({'wishlist_book_ids': [(6, 0, book_ids)]})
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Wishlist Updated',
+                'message': f'Wishlist now has {len(book_ids)} book(s).',
+                'type': 'success',
+            },
+        }
 

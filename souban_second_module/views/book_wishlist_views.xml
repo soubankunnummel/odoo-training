@@ -1,0 +1,46 @@
+<odoo>
+    <record id="book_wishlist_form_view" model="ir.ui.view">
+        <field name="name">student.book.wishlist.form</field>
+        <field name="model">student.book.wishlist</field>
+        <field name="arch" type="xml">
+            <form string="Book Wishlist">
+                <sheet>
+                    <group>
+                        <field name="student_id"/>
+                        <field name="book_ids" widget="many2many_tags"/>
+                        <field name="note"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Borrow Wishlist Books" type="object"
+                            name="action_add_wishlist_books_to_borrow" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="book_wishlist_list_view" model="ir.ui.view">
+        <field name="name">student.book.wishlist.list</field>
+        <field name="model">student.book.wishlist</field>
+        <field name="arch" type="xml">
+            <list string="Book Wishlist">
+                <field name="student_id"/>
+                <field name="book_ids" widget="many2many_tags"/>
+                <field name="note"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_book_wishlist" model="ir.actions.act_window">
+        <field name="name">Book Wishlist</field>
+        <field name="res_model">student.book.wishlist</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_book_wishlist"
+              name="Book Wishlist"
+              parent="souban_second_module.student_registration_menu_root"
+              action="action_book_wishlist"
+              sequence="100"/>
+</odoo>

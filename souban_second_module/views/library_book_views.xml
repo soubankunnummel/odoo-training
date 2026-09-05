@@ -1,0 +1,72 @@
+<odoo>
+    <record id="library_book_form_view" model="ir.ui.view">
+        <field name="name">student.library.book.form</field>
+        <field name="model">student.library.book</field>
+        <field name="arch" type="xml">
+            <form string="Library Book">
+                <header>
+                    <button name="action_borrow_book" type="object"
+                            string="Borrow" class="btn-primary"
+                            invisible="not available"/>
+                    <button name="action_return_book" type="object"
+                            string="Return" class="btn-secondary"
+                            invisible="available"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="author"/>
+                            <field name="isbn"/>
+                        </group>
+                        <group>
+                            <field name="category"/>
+                            <field name="available" readonly="1"/>
+                            <field name="borrower_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="library_book_list_view" model="ir.ui.view">
+        <field name="name">student.library.book.list</field>
+        <field name="model">student.library.book</field>
+        <field name="arch" type="xml">
+            <list string="Library Books" decoration-success="available == True" decoration-danger="available == False">
+                <field name="name"/>
+                <field name="author"/>
+                <field name="category"/>
+                <field name="borrower_id"/>
+                <field name="available" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="library_book_search_view" model="ir.ui.view">
+        <field name="name">student.library.book.search</field>
+        <field name="model">student.library.book</field>
+        <field name="arch" type="xml">
+            <search string="Search Books">
+                <field name="name"/>
+                <field name="author"/>
+                <separator/>
+                <filter string="Available" name="filter_available" domain="[('available', '=', True)]"/>
+                <filter string="Borrowed" name="filter_borrowed" domain="[('available', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_library_book" model="ir.actions.act_window">
+        <field name="name">Library Books</field>
+        <field name="res_model">student.library.book</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_library_book"
+              name="Library Books"
+              parent="souban_second_module.student_registration_menu_root"
+              action="action_library_book"
+              sequence="90"/>
+</odoo>
